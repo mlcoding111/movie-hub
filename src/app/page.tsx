@@ -9,6 +9,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
+import { apiFetch } from "@/lib/api";
 
 // Temporary mock data
 const movies = [
@@ -159,6 +160,10 @@ export default function Home() {
   const [currentPage, setCurrentPage] = useState(1)
   const [selectedCategory, setSelectedCategory] = useState("All")
   const [searchQuery, setSearchQuery] = useState("")
+
+  const moviesTest = apiFetch('movie/popular').then((data) => {
+    console.log(data);
+  });
 
 
     // Filter movies based on category and search
