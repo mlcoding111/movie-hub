@@ -14,13 +14,25 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-This is a simple application to showcase my skills with nextjs.
+**Movie Hub** is a modern, responsive web application built with **Next.js** and **TypeScript**. The purpose of this project is to demonstrate my frontend development skills, particularly with the latest features of Next.js 14+ and server/client component architecture.
+
+This project showcases my ability to:
+
+- Integrate and consume external REST APIs (TMDB)
+- Effectively separate and optimize Server & Client Components
+- Build clean, responsive UIs using ShadCN UI and Tailwind CSS
+- Implement basic authentication and route protection
+- Structure and organize a scalable codebase with TypeScript
+- Follow modern best practices in frontend performance and SEO (via Next.js app router)
+
+> ⚠️ _This project is intentionally scoped to be lean and focused. It avoids over-structuring or excessive abstraction in order to highlight core frontend concepts without adding unnecessary complexity._
+
 <!-- <img src="https://user-images.githubusercontent.com/57301242/171517585-6dd9c23d-1d69-4eb7-b252-751f305e6108.png" alt="Logo" >
 <p align="right">(<a href="#top">back to top</a>)</p>
 
  -->
 
- # Basic Roadmap
+ ## Roadmap
  * [ ] Implement TMDB api
  * [ ] Proper server/client components segmentation
  * [ ] Basic authentication system
@@ -32,18 +44,14 @@ This is a simple application to showcase my skills with nextjs.
 * [NextJs](https://sass-lang.com/)
 * [ShadCn UI](https://mui.com/)
 
-
-## Roadmap
-
 <!-- LICENSE -->
 ## License
 
 Distributed under the MIT License. See `LICENSE.txt` for more information.
 
-
 <!-- CONTACT -->
 ## Contact
 
-Michael Lacroix - kennycoding111@gmail.com - [http://mlweb.org](mlweb.org)
+Michael Lacroix - kennycoding111@gmail.com - http://mlweb.org
 
 <!-- <p align="right">(<a href="#top">back to top</a>)</p> -->
