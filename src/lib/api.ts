@@ -1,5 +1,7 @@
 const BASE_URL = 'https://api.themoviedb.org/3';
 
+// TODO: Add: language=en-US, page=1, sort_by=popularity.desc, by default. Also handle the with_genres parameter.
+
 /**
  * Extends fetch to include a default error handler
  * @param url - The URL to fetch
