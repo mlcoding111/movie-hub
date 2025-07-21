@@ -5,9 +5,9 @@ import { Badge } from "@/components/ui/badge";
 import { Star } from "lucide-react";
 import Image from "next/image";
 import { getImageUrl } from "@/utils/images";
+import { getMovieAllGenres } from "@/utils/genres";
 
 export default function MovieCard({ movie }: { movie: any }) {
-    console.log('The movie is', movie);
     return (
         <Card className="group hover:shadow-xl transition-all duration-300">
             <CardContent className="p-0">
@@ -30,10 +30,14 @@ export default function MovieCard({ movie }: { movie: any }) {
                 <div className="p-4">
                     <h3 className="font-semibold text-lg mb-1 line-clamp-1">{movie.title}</h3>
                     <div className="flex items-center justify-between text-sm text-muted-foreground">
-                        <span>{movie.year}</span>
-                        <Badge variant="outline" className="text-xs">
-                            {movie.genre}
-                        </Badge>
+                        <span>{movie.release_date.split('-')[0]}</span>
+                        <div className="flex items-center gap-1">
+                            {getMovieAllGenres(movie.genre_ids).map((genre) => (
+                                <Badge variant="outline" className="text-xs" key={genre}>
+                                    {genre}
+                                </Badge>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </CardContent>

@@ -1,177 +1,24 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Heart, Play, Search, Share2, Star } from "lucide-react";
+import { Play, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { Badge } from "@/components/ui/badge";
-import { apiFetch } from "@/lib/api";
 import MoviesList from "../common/MoviesList";
-
-// Temporary mock data
-const movies = [
-  {
-    id: 1,
-    title: "The Dark Knight",
-    year: 2008,
-    rating: 9.0,
-    genre: "Action",
-    poster: "/placeholder.svg?height=400&width=300",
-  },
-  {
-    id: 2,
-    title: "Inception",
-    year: 2010,
-    rating: 8.8,
-    genre: "Sci-Fi",
-    poster: "/placeholder.svg?height=400&width=300",
-  },
-  {
-    id: 3,
-    title: "Pulp Fiction",
-    year: 1994,
-    rating: 8.9,
-    genre: "Crime",
-    poster: "/placeholder.svg?height=400&width=300",
-  },
-  {
-    id: 4,
-    title: "The Shawshank Redemption",
-    year: 1994,
-    rating: 9.3,
-    genre: "Drama",
-    poster: "/placeholder.svg?height=400&width=300",
-  },
-  {
-    id: 5,
-    title: "Forrest Gump",
-    year: 1994,
-    rating: 8.8,
-    genre: "Drama",
-    poster: "/placeholder.svg?height=400&width=300",
-  },
-  {
-    id: 6,
-    title: "The Matrix",
-    year: 1999,
-    rating: 8.7,
-    genre: "Sci-Fi",
-    poster: "/placeholder.svg?height=400&width=300",
-  },
-  {
-    id: 7,
-    title: "Goodfellas",
-    year: 1990,
-    rating: 8.7,
-    genre: "Crime",
-    poster: "/placeholder.svg?height=400&width=300",
-  },
-  {
-    id: 8,
-    title: "The Godfather",
-    year: 1972,
-    rating: 9.2,
-    genre: "Crime",
-    poster: "/placeholder.svg?height=400&width=300",
-  },
-  {
-    id: 9,
-    title: "Interstellar",
-    year: 2014,
-    rating: 8.6,
-    genre: "Sci-Fi",
-    poster: "/placeholder.svg?height=400&width=300",
-  },
-  {
-    id: 10,
-    title: "Fight Club",
-    year: 1999,
-    rating: 8.8,
-    genre: "Drama",
-    poster: "/placeholder.svg?height=400&width=300",
-  },
-  {
-    id: 11,
-    title: "The Lord of the Rings",
-    year: 2001,
-    rating: 8.8,
-    genre: "Fantasy",
-    poster: "/placeholder.svg?height=400&width=300",
-  },
-  {
-    id: 12,
-    title: "Star Wars",
-    year: 1977,
-    rating: 8.6,
-    genre: "Sci-Fi",
-    poster: "/placeholder.svg?height=400&width=300",
-  },
-  {
-    id: 13,
-    title: "Casablanca",
-    year: 1942,
-    rating: 8.5,
-    genre: "Romance",
-    poster: "/placeholder.svg?height=400&width=300",
-  },
-  {
-    id: 14,
-    title: "Schindler's List",
-    year: 1993,
-    rating: 9.0,
-    genre: "Drama",
-    poster: "/placeholder.svg?height=400&width=300",
-  },
-  {
-    id: 15,
-    title: "The Avengers",
-    year: 2012,
-    rating: 8.0,
-    genre: "Action",
-    poster: "/placeholder.svg?height=400&width=300",
-  },
-  {
-    id: 16,
-    title: "Titanic",
-    year: 1997,
-    rating: 7.9,
-    genre: "Romance",
-    poster: "/placeholder.svg?height=400&width=300",
-  },
-]
-
-const categories = [
-  { name: "Action", count: 125, image: "/placeholder.svg?height=200&width=300" },
-  { name: "Drama", count: 89, image: "/placeholder.svg?height=200&width=300" },
-  { name: "Comedy", count: 156, image: "/placeholder.svg?height=200&width=300" },
-  { name: "Sci-Fi", count: 78, image: "/placeholder.svg?height=200&width=300" },
-  { name: "Horror", count: 92, image: "/placeholder.svg?height=200&width=300" },
-  { name: "Romance", count: 67, image: "/placeholder.svg?height=200&width=300" },
-  { name: "Thriller", count: 103, image: "/placeholder.svg?height=200&width=300" },
-  { name: "Fantasy", count: 54, image: "/placeholder.svg?height=200&width=300" },
-]
 
 const MOVIES_PER_PAGE = 12
 
-export default function Home({ movies }: { movies: any[] }) {
+export default function Home({ movies, categories }: { movies: any[], categories: any[] }) {
   const [currentPage, setCurrentPage] = useState(1)
   const [selectedCategory, setSelectedCategory] = useState("All")
   const [selectedType, setSelectedType] = useState("Popular")
   const [searchQuery, setSearchQuery] = useState("")
 
   const moviesList = movies.results || [];
-
-  const moviesTest = apiFetch('movie/popular').then((data) => {
-    console.log('The movies are', data);
-  });
-  // const moviesTest2 = apiFetch('discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_genres=27').then((data) => {
-  //   console.log("test2", data);
-  // });
-
 
     // Filter movies based on category and search
     const filteredMovies = moviesList.filter((movie) => {

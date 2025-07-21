@@ -1,15 +1,19 @@
 import { apiFetch } from "@/lib/api";
 import HomePage from "./components/pages/Home";
 import { Suspense } from "react";
+import { getGenres } from "@/api/genre";
 
 
 export default async function Home() {
-  const movies = await apiFetch('movie/popular');
-  console.log('The movies arex xdd', movies);
+  const [movies, genres] = await Promise.all([
+    apiFetch('movie/popular'),
+    getGenres()
+  ]);
+
   return (
     <div>
       <Suspense fallback={<div>Loading...</div>}>
-        <HomePage movies={movies} />
+        <HomePage movies={movies} categories={genres} />
       </Suspense>
     </div>
   )
