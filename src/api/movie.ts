@@ -11,3 +11,12 @@ export async function getMovies(query: string, options: any = {}) {
     console.log('The movies are', result);
     return result;
 }
+
+export async function getMovieById(movieId: number) {
+    const result = await apiFetch(`movie/${movieId}`, {
+        next: {
+            tags: ['movie', movieId.toString()]
+        }
+    });
+    return result;
+}
