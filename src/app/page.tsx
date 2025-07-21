@@ -1,12 +1,18 @@
-import { apiFetch } from "@/lib/api";
 import HomePage from "./components/pages/Home";
 import { Suspense } from "react";
 import { getGenres } from "@/api/genre";
+import { getMovies } from "@/api/movie";
 
+interface HomeProps {
+  searchParams: { [key: string]: string | string[] | undefined };
+}
 
-export default async function Home() {
+export default async function Home({ searchParams }: HomeProps) {
+  const params = await searchParams;
+  const type = (params.type as string) || 'popular';
+  
   const [movies, genres] = await Promise.all([
-    apiFetch('movie/popular'),
+    getMovies(type),
     getGenres()
   ]);
 

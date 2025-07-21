@@ -7,8 +7,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MoviesList from "../common/MoviesList";
+import { getMovies } from "@/api/movie";
 
 const MOVIES_PER_PAGE = 12
 
@@ -18,7 +19,17 @@ export default function Home({ movies, categories }: { movies: any[], categories
     const [selectedType, setSelectedType] = useState("Popular")
     const [searchQuery, setSearchQuery] = useState("")
 
-    const moviesList = movies.results || [];
+    const [moviesList, setMoviesList] = useState(movies.results || []);
+
+    useEffect(() => {
+        const fetchMovies = async () => {
+            const movies = await getMovies(selectedType.toLowerCase());
+            setMoviesList(movies.results || []);
+        }
+        if (selectedType) {
+            fetchMovies();
+        }
+    }, [selectedType]);
 
     // Filter movies based on category and search
     const filteredMovies = moviesList.filter((movie) => {
