@@ -18,6 +18,8 @@ export const apiFetch = async (url: string, options: RequestInit = {}): Promise<
         },
     }
 
+    console.log('The full url is', fullUrl)
+
     const mergedOptions = { ...defaultOptions, ...options }
 
     try {

@@ -21,15 +21,21 @@ export default function Home({ movies, categories }: { movies: any[], categories
 
     const [moviesList, setMoviesList] = useState(movies.results || []);
 
+    async function fetchMovies(category: string, type: string) {
+        const movies = await getMovies(buildUrl(category, type));
+        setMoviesList(movies.results || []);
+    }
+
     useEffect(() => {
-        const fetchMovies = async () => {
-            const movies = await getMovies(toSnakeCase(selectedType));
-            setMoviesList(movies.results || []);
-        }
-        if (selectedType) {
-            fetchMovies();
-        }
-    }, [selectedType]);
+        fetchMovies(selectedCategory, selectedType);
+    }, [selectedType, selectedCategory]);
+
+    function buildUrl(category: string, type: string) {
+        const formattedType = toSnakeCase(type)
+        const formattedCategory = toSnakeCase(category)
+        return `${formattedType}?with_genres=${formattedCategory}`
+    }
+
 
     // Filter movies based on category and search
     const filteredMovies = moviesList.filter((movie) => {

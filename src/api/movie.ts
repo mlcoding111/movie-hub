@@ -8,7 +8,7 @@ export async function getMovies(query: string, options: any = {}) {
         },
         ...options
     });
-    console.log('The movies are', result);
+    // console.log('The movies are', result);
     return result;
 }
 
