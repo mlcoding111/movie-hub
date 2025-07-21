@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import MoviesList from "../common/MoviesList";
 import { getMovies } from "@/api/movie";
+import { toSnakeCase } from "@/utils/string";
 
 const MOVIES_PER_PAGE = 12
 
@@ -23,7 +24,7 @@ export default function Home({ movies, categories }: { movies: any[], categories
 
     useEffect(() => {
         const fetchMovies = async () => {
-            const movies = await getMovies(selectedType.toLowerCase());
+            const movies = await getMovies(toSnakeCase(selectedType));
             setMoviesList(movies.results || []);
         }
         if (selectedType) {
