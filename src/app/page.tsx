@@ -9,6 +9,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
+import { apiFetch } from "@/lib/api";
 
 // Temporary mock data
 const movies = [
@@ -158,7 +159,15 @@ const MOVIES_PER_PAGE = 12
 export default function Home() {
   const [currentPage, setCurrentPage] = useState(1)
   const [selectedCategory, setSelectedCategory] = useState("All")
+  const [selectedType, setSelectedType] = useState("Popular")
   const [searchQuery, setSearchQuery] = useState("")
+
+  const moviesTest = apiFetch('movie/popular').then((data) => {
+    console.log(data);
+  });
+  // const moviesTest2 = apiFetch('discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_genres=27').then((data) => {
+  //   console.log("test2", data);
+  // });
 
 
     // Filter movies based on category and search
@@ -177,6 +186,11 @@ export default function Home() {
     // Reset to page 1 when filters change
     const handleCategoryChange = (category: string) => {
       setSelectedCategory(category)
+      setCurrentPage(1)
+    }
+
+    const handleTypeChange = (type: string) => {
+      setSelectedType(type)
       setCurrentPage(1)
     }
   
@@ -284,25 +298,39 @@ export default function Home() {
                 Showing {startIndex + 1}-{Math.min(endIndex, filteredMovies.length)} of {filteredMovies.length} movies
               </p>
             </div>
+            <div className="flex flex-col space-y-2">
+              <div className="flex items-center space-x-2">
+              {["Popular", "Upcoming", "Now Playing", "Top Rated"].map((type) => (
+                  <Button
+                    key={type}
+                    variant={selectedType === type ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => handleTypeChange(type)}
+                  >
+                    {type}
+                  </Button>
+                ))}
+                </div>
             <div className="flex items-center space-x-2">
-              <Button
+              {/* <Button
                 variant={selectedCategory === "All" ? "default" : "outline"}
                 size="sm"
                 onClick={() => handleCategoryChange("All")}
-              >
+                >
                 All
               </Button>
               {["Action", "Drama", "Sci-Fi", "Comedy"].map((genre) => (
                 <Button
-                  key={genre}
-                  variant={selectedCategory === genre ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => handleCategoryChange(genre)}
+                key={genre}
+                variant={selectedCategory === genre ? "default" : "outline"}
+                size="sm"
+                onClick={() => handleCategoryChange(genre)}
                 >
                   {genre}
                 </Button>
-              ))}
+              ))} */}
             </div>
+              </div>
           </div>
 
           {/* Movies Grid */}
