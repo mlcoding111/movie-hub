@@ -126,7 +126,7 @@ export default function MovieDetailsPage({ movie }: { movie: any }) {
               </div>
 
               {/* Movie Info */}
-              <div className="flex-1 text-white">
+              <div className="flex-1 md:text-white">
                 <div className="mb-4">
                   <h1 className="text-4xl md:text-5xl font-bold mb-2">{movie.title}</h1>
                   <div className="flex items-center space-x-4 text-lg">
@@ -147,7 +147,7 @@ export default function MovieDetailsPage({ movie }: { movie: any }) {
                   <span>{movie.original_title}</span>
                 </div> */}
 
-                <div className="flex items-center space-x-6 mb-6">
+                <div className="flex items-center space-x-6 mb-14">
                   <div className="flex items-center">
                     <Star className="h-5 w-5 text-yellow-400 fill-yellow-400 mr-1" />
                     <span className="text-xl font-semibold">{movie.vote_average}</span>
@@ -159,7 +159,9 @@ export default function MovieDetailsPage({ movie }: { movie: any }) {
                   </div>
                 </div>
 
-                <p className="text-lg mb-6 leading-relaxed max-w-2xl text-slate-700">{movie.overview}</p>
+                <div className="mt-3">
+                  <p className="text-lg mb-6 leading-relaxed max-w-2xl text-slate-700">{movie.overview}</p>
+                </div>
 
                 <div className="flex space-x-4 mb-6">
                   <Button size="lg" className="bg-red-600 hover:bg-red-700">
