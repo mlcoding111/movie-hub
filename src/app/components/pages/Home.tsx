@@ -2,10 +2,9 @@
 
 import { Button } from "@/components/ui/button";
 import { Play, Search } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent } from "@/components/ui/card";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import MoviesList from "../common/MoviesList";
@@ -121,27 +120,10 @@ export default function Home({ movies, categories }: { movies: any[], categories
             <section className="py-12">
                 <div className="container mx-auto px-4">
                     <h2 className="text-3xl font-bold mb-8">Browse by Genre</h2>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <div className="flex flex-wrap gap-2">
                         {categories.map((category) => (
                             <Link key={category.name} href={`/genre/${category.name.toLowerCase()}`}>
-                                <Card className="hover:shadow-lg transition-shadow">
-                                    <CardContent className="p-0">
-                                        <div className="relative">
-                                            <Image
-                                                src={category.image || "/placeholder.svg"}
-                                                alt={category.name}
-                                                width={300}
-                                                height={200}
-                                                className="w-full h-32 object-cover rounded-t-lg"
-                                            />
-                                            <div className="absolute inset-0 bg-black/40 rounded-t-lg" />
-                                            <div className="absolute bottom-4 left-4 text-white">
-                                                <h3 className="font-semibold text-lg">{category.name}</h3>
-                                                <p className="text-sm opacity-90">{category.count} movies</p>
-                                            </div>
-                                        </div>
-                                    </CardContent>
-                                </Card>
+                                <Badge variant="secondary">{category.name}</Badge>
                             </Link>
                         ))}
                     </div>
