@@ -7,15 +7,28 @@ import Header from "./Header";
 import { getGenres } from "@/api/genre";
 import { getMovies } from "@/api/movie";
 import CategoriesSection from "./CategoriesSection";
-import { Suspense } from "react";
+import { Suspense, use } from "react";
+import { toSnakeCase } from "@/utils/string";
+
+// SearchParams will contain: type, category, search
+// type: popular, top_rated, upcoming, now_playing
+// category: all, action, adventure, animation, comedy, crime, documentary, drama, family, fantasy, history, horror, music, mystery, romance, science_fiction, tv_movie, thriller, war, western
+// search: search query
 
 interface HomeProps {
-    searchParams: { [key: string]: string | string[] | undefined };
+    searchParams: {
+        type: string;
+        category: string;
+        search: string;
+    }
 }
 
-export default async function Home() {
+export default async function Home({ searchParams }: HomeProps) {
+    const params = await searchParams;
+    console.log(params);
+
     const [movies, categories] = await Promise.all([
-        getMovies('popular'),
+        getMovies(toSnakeCase(params?.type || 'popular')),
         getGenres()
       ]);
     
@@ -57,7 +70,7 @@ export default async function Home() {
             </section>
 
 
-            <MoviesSection movies={movies} categories={categories} />
+            <MoviesSection params movies={movies} categories={categories} />
         </div>
     );
 }
