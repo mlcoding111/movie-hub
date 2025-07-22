@@ -10,16 +10,11 @@ interface HomeProps {
 export default async function Home({ searchParams }: HomeProps) {
   const params = await searchParams;
   const type = (params.type as string) || 'popular';
-  
-  const [movies, genres] = await Promise.all([
-    getMovies(type),
-    getGenres()
-  ]);
 
   return (
     <div>
       <Suspense fallback={<div>Loading...</div>}>
-        <HomePage movies={movies} categories={genres} />
+        <HomePage />
       </Suspense>
     </div>
   )
