@@ -39,9 +39,7 @@ export default function Home({ movies, categories }: { movies: any, categories: 
                 setHasMore(false)
             }
             if (append) {
-                const mergedMovies = [...moviesList, ...response.results]
-                console.log('The merged movies are', mergedMovies)
-                setMoviesList(mergedMovies)
+                setMoviesList((prev: any[]) => [...prev, ...response.results])
             } else {
                 setMoviesList(response.results || [])
             }
@@ -50,7 +48,7 @@ export default function Home({ movies, categories }: { movies: any, categories: 
         } finally {
             setIsLoading(false)
         }
-    }, [moviesList]);
+    }, []); // No moviesList in dependencies
 
     // Create debounced version of fetchMovies
     const debouncedFetchMovies = useCallback(
@@ -59,6 +57,7 @@ export default function Home({ movies, categories }: { movies: any, categories: 
     );
 
     useEffect(() => {
+        console.log('That')
         debouncedFetchMovies(selectedCategory, selectedType, false, page);
     }, [selectedType, selectedCategory, debouncedFetchMovies]);
 
