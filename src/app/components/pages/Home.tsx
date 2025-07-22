@@ -57,7 +57,6 @@ export default function Home({ movies, categories }: { movies: any, categories: 
     );
 
     useEffect(() => {
-        console.log('That')
         debouncedFetchMovies(selectedCategory, selectedType, false, page);
     }, [selectedType, selectedCategory, debouncedFetchMovies]);
 
