@@ -6,6 +6,8 @@ import MoviesSection from "./MoviesSection";
 import Header from "./Header";
 import { getGenres } from "@/api/genre";
 import { getMovies } from "@/api/movie";
+import CategoriesSection from "./CategoriesSection";
+import { Suspense } from "react";
 
 interface HomeProps {
     searchParams: { [key: string]: string | string[] | undefined };
@@ -35,16 +37,21 @@ export default async function Home() {
                 </div>
             </section>
 
+            {/* <CategoriesSection /> */}
+            {/* <MoviesSection movies={movies} categories={categories} /> */}
+
             {/* Categories Section */}
             <section className="py-12">
                 <div className="container mx-auto px-4">
                     <h2 className="text-3xl font-bold mb-8">Browse by Genre</h2>
                     <div className="flex flex-wrap gap-2">
+                        <Suspense fallback={<div>Loading...</div>}>
                         {categories.map((category) => (
                             <Link key={category.name} href={`/genre/${category.name.toLowerCase()}`}>
                                 <Badge variant="secondary">{category.name}</Badge>
                             </Link>
                         ))}
+                        </Suspense>
                     </div>
                 </div>
             </section>

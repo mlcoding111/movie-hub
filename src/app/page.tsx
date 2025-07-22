@@ -8,14 +8,11 @@ interface HomeProps {
 }
 
 export default async function Home({ searchParams }: HomeProps) {
-  const params = await searchParams;
-  const type = (params.type as string) || 'popular';
 
   return (
     <div>
-      <Suspense fallback={<div>Loading...</div>}>
-        <HomePage />
-      </Suspense>
+      hallo
+      <HomePage />
     </div>
   )
 
