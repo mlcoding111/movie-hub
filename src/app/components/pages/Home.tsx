@@ -6,65 +6,112 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import MoviesList from "../common/MoviesList";
 import { getMovies } from "@/api/movie";
 import { toSnakeCase } from "@/utils/string";
+import { useInView } from "react-intersection-observer";
+import Spinner from "../common/Spinner";
+import { debounce } from "lodash";
 
-const MOVIES_PER_PAGE = 12
+const MOVIES_PER_PAGE = 20
 
-export default function Home({ movies, categories }: { movies: any[], categories: any[] }) {
+export default function Home({ movies, categories }: { movies: any, categories: any[] }) {
     const [currentPage, setCurrentPage] = useState(1)
     const [selectedCategory, setSelectedCategory] = useState("All")
     const [selectedType, setSelectedType] = useState("Popular")
+    const [page, setPage] = useState(1)
     const [searchQuery, setSearchQuery] = useState("")
+
+    const { ref, inView } = useInView({
+        threshold: 0.5,
+    })
+    const [hasMore, setHasMore] = useState(true);
+    const [isLoading, setIsLoading] = useState(false)
 
     const [moviesList, setMoviesList] = useState(movies.results || []);
 
-    async function fetchMovies(category: string, type: string) {
-        const movies = await getMovies(buildUrl(category, type));
-        setMoviesList(movies.results || []);
-    }
+    const fetchMovies = useCallback(async (category: string, type: string, append: boolean = false, page: number = 1) => {
+        setIsLoading(true)
+        try {
+            const response = await getMovies(buildUrl(category, type, page));
+            if (response.total_pages <= page) {
+                setHasMore(false)
+            }
+            if (append) {
+                const mergedMovies = [...moviesList, ...response.results]
+                console.log('The merged movies are', mergedMovies)
+                setMoviesList(mergedMovies)
+            } else {
+                setMoviesList(response.results || [])
+            }
+        } catch (error) {
+            console.error('Error fetching movies:', error);
+        } finally {
+            setIsLoading(false)
+        }
+    }, [moviesList]);
+
+    // Create debounced version of fetchMovies
+    const debouncedFetchMovies = useCallback(
+        debounce(fetchMovies, 300),
+        [fetchMovies]
+    );
 
     useEffect(() => {
-        fetchMovies(selectedCategory, selectedType);
-    }, [selectedType, selectedCategory]);
+        debouncedFetchMovies(selectedCategory, selectedType, false, page);
+    }, [selectedType, selectedCategory, debouncedFetchMovies]);
 
-    function buildUrl(category: string, type: string) {
+    useEffect(() => {
+        if (inView && hasMore && !isLoading) {
+            const nextPage = page + 1
+            setPage(nextPage)
+            debouncedFetchMovies(selectedCategory, selectedType, true, nextPage);
+        }
+    }, [inView, hasMore, debouncedFetchMovies]);
+
+    function buildUrl(category: string, type: string, page: number = 1) {
         const formattedType = toSnakeCase(type)
         const formattedCategory = toSnakeCase(category)
-        return `${formattedType}?with_genres=${formattedCategory}`
+        return `${formattedType}?with_genres=${formattedCategory}&page=${page}`;
     }
 
 
     // Filter movies based on category and search
-    const filteredMovies = moviesList.filter((movie) => {
-        const matchesCategory = selectedCategory === "All" || movie.genre === selectedCategory
-        const matchesSearch = movie.title.toLowerCase().includes(searchQuery.toLowerCase())
-        return matchesCategory && matchesSearch
-    })
-
-    // Calculate pagination
-    const totalPages = Math.ceil(filteredMovies.length / MOVIES_PER_PAGE)
-    const startIndex = (currentPage - 1) * MOVIES_PER_PAGE
-    const endIndex = startIndex + MOVIES_PER_PAGE
-    const currentMovies = filteredMovies.slice(startIndex, endIndex)
+    const filteredMovies = moviesList.filter((movie: any) => movie.title.toLowerCase().includes(searchQuery.toLowerCase()))
 
     // Reset to page 1 when filters change
     const handleCategoryChange = (category: string) => {
         setSelectedCategory(category)
         setCurrentPage(1)
+        setPage(1)
     }
 
     const handleTypeChange = (type: string) => {
         setSelectedType(type)
         setCurrentPage(1)
+        setPage(1)
     }
 
     const handleSearchChange = (query: string) => {
         setSearchQuery(query)
         setCurrentPage(1)
+        setPage(1)
     }
+
+    function TypeButtons() {
+        return (
+            <div className="flex flex-col space-y-2">
+                <div className="flex items-center space-x-2">
+                    {["Popular", "Upcoming", "Now Playing", "Top Rated"].map((type) => (
+                        <Button key={type} variant={selectedType === type ? "default" : "outline"} size="sm" onClick={() => handleTypeChange(type)}>
+                            {type}
+                        </Button>
+                    ))}
+                </div>
+            </div>
+        )
+    }   
 
     return (
         <div className="min-h-screen bg-background">
@@ -145,84 +192,21 @@ export default function Home({ movies, categories }: { movies: any[], categories
                                 {selectedCategory === "All" ? "All Movies" : `${selectedCategory} Movies`}
                             </h2>
                             <p className="text-muted-foreground mt-2">
-                                Showing {startIndex + 1}-{Math.min(endIndex, filteredMovies.length)} of {filteredMovies.length} movies
+                                Showing {MOVIES_PER_PAGE * page} of {movies.total_results} movies
                             </p>
                         </div>
-                        <div className="flex flex-col space-y-2">
-                            <div className="flex items-center space-x-2">
-                                {["Popular", "Upcoming", "Now Playing", "Top Rated"].map((type) => (
-                                    <Button
-                                        key={type}
-                                        variant={selectedType === type ? "default" : "outline"}
-                                        size="sm"
-                                        onClick={() => handleTypeChange(type)}
-                                    >
-                                        {type}
-                                    </Button>
-                                ))}
-                            </div>
-                            <div className="flex items-center space-x-2">
-                                {/* <Button
-                variant={selectedCategory === "All" ? "default" : "outline"}
-                size="sm"
-                onClick={() => handleCategoryChange("All")}
-                >
-                All
-              </Button>
-              {["Action", "Drama", "Sci-Fi", "Comedy"].map((genre) => (
-                <Button
-                key={genre}
-                variant={selectedCategory === genre ? "default" : "outline"}
-                size="sm"
-                onClick={() => handleCategoryChange(genre)}
-                >
-                  {genre}
-                </Button>
-              ))} */}
-                            </div>
-                        </div>
+                        <TypeButtons />
                     </div>
 
                     {/* Movies Grid */}
-                    <MoviesList movies={currentMovies} />
-
-                    {/* Pagination */}
-                    {totalPages > 1 && (
-                        <div className="flex items-center justify-center space-x-2">
-                            <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
-                                disabled={currentPage === 1}
-                            >
-                                <ChevronLeft className="h-4 w-4" />
-                                Previous
-                            </Button>
-
-                            <div className="flex space-x-1">
-                                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                                    <Button
-                                        key={page}
-                                        variant={currentPage === page ? "default" : "outline"}
-                                        size="sm"
-                                        onClick={() => setCurrentPage(page)}
-                                        className="w-10"
-                                    >
-                                        {page}
-                                    </Button>
-                                ))}
-                            </div>
-
-                            <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
-                                disabled={currentPage === totalPages}
-                            >
-                                Next
-                                <ChevronRight className="h-4 w-4" />
-                            </Button>
-                        </div>
+                    <MoviesList movies={filteredMovies} />
+                    {hasMore && (
+                      <div ref={ref} className="py-4 text-center text-gray-500">
+                        <Spinner />
+                      </div>
+                    )}
+                    {!hasMore && (
+                      <div className="py-4 text-center text-green-500">No more items</div>
                     )}
                 </div>
             </section>
