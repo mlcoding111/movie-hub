@@ -55,7 +55,7 @@ export default function MoviesList({ movies }: { movies: any }) {
                 </Link>
             ))}
             {hasMore && (
-                <div ref={ref} className="py-4 text-center text-gray-500">
+                <div ref={ref} className="py-4 col-span-full text-center text-gray-500">
                     <Spinner />
                 </div>
             )}
