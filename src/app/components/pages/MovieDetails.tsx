@@ -78,7 +78,6 @@ type ProductionCompany = {
 
 export default function MovieDetailsPage({ movie }: { movie: any }) {
   const [isFavorite, setIsFavorite] = useState(false)
-  console.log(movie)
 
   return (
     <div className="min-h-screen bg-background">
@@ -150,12 +149,12 @@ export default function MovieDetailsPage({ movie }: { movie: any }) {
                 <div className="flex items-center space-x-6 mb-14">
                   <div className="flex items-center">
                     <Star className="h-5 w-5 text-yellow-400 fill-yellow-400 mr-1" />
-                    <span className="text-xl font-semibold">{movie.vote_average}</span>
+                    <span className="text-xl font-semibold">{Math.round(movie.vote_average * 10) / 10}</span>
                     <span className="text-sm ml-1 opacity-80">/10</span>
                   </div>
                   <div className="text-sm">
-                    <div>IMDb: {movie.vote_average}/10</div>
-                    <div>Rotten Tomatoes: {movie.vote_count}%</div>
+                    <div>IMDb: {Math.round(movie.vote_average * 10) / 10}/10</div>
+                    <div>Rotten Tomatoes: {Math.round(movie.vote_count)}%</div>
                   </div>
                 </div>
 
