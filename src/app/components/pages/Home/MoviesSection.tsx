@@ -3,6 +3,7 @@ import MoviesList from "../../common/MoviesList"
 import TypeChangeButtons from "./TypeChangeButtons"
 import { getMovies } from "@/api/movie";
 import { buildMovieUrl } from "@/utils/query";
+import { toTitleCase } from "@/utils/string";
 
 const MOVIES_PER_PAGE = 20;
 
@@ -16,7 +17,7 @@ export default async function MoviesSection({ params }: { params: any }) {
                 <div className="flex items-center justify-between mb-8">
                     <div>
                         <h2 className="text-3xl font-bold">
-                            {category === "All" ? "All Movies" : `${category} Movies`}
+                            {toTitleCase(category)} Movies
                         </h2>
                         <p className="text-muted-foreground mt-2">
                             Showing {MOVIES_PER_PAGE * page} of {movies?.total_results} movies
