@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
@@ -11,6 +11,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { useParams } from "next/navigation"
 import { getImageUrl } from "@/utils/images"
+import { toast } from "sonner"
 
 const relatedMovies = [
   {
@@ -79,6 +80,18 @@ type ProductionCompany = {
 export default function MovieDetailsPage({ movie }: { movie: any }) {
   const [isFavorite, setIsFavorite] = useState(false)
 
+  // OnFavorite, push into an  array of key favorites
+  // OnUnfavorite, remove from the array
+  // OnLoad, check if the movie is in the array of favorites
+  // OnLoad, set the isFavorite state to the result of the check
+
+  useEffect(() => {
+    const favorites = localStorage.getItem("favorites")
+    if (favorites) {
+      setIsFavorite(favorites.includes(movie.id.toString()))
+    }
+  }, [])
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -90,7 +103,10 @@ export default function MovieDetailsPage({ movie }: { movie: any }) {
               <span>Back to Movies</span>
             </Link>
             <div className="flex items-center space-x-2">
-              <Button variant="outline" size="sm" onClick={() => setIsFavorite(!isFavorite)}>
+              <Button variant="outline" size="sm" onClick={() => {
+                setIsFavorite(!isFavorite)
+                toast.success(isFavorite ? "Movie removed from favorites" : "Movie added to favorites")
+              }}>
                 <Heart className={`h-4 w-4 mr-2 ${isFavorite ? "fill-red-500 text-red-500" : ""}`} />
                 {isFavorite ? "Favorited" : "Add to Favorites"}
               </Button>
