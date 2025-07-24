@@ -1,21 +1,14 @@
-import { toSnakeCase } from "@/utils/string"
+
 import MoviesList from "../../common/MoviesList"
 import TypeChangeButtons from "./TypeChangeButtons"
 import { getMovies } from "@/api/movie";
+import { buildMovieUrl } from "@/utils/query";
 
 const MOVIES_PER_PAGE = 20;
 
 export default async function MoviesSection({ params }: { params: any }) {
     const { type = 'popular', category = 'all', page = 1 } = params
-    const movies = await getMovies(await buildUrl(category, type, parseInt(page as string) || 1))
-
-    // TODO: Move this to a separate file
-    async function buildUrl(category: string, type: string, page: number = 1) {
-        const formattedType = toSnakeCase(type)
-        const formattedCategory = toSnakeCase(category)
-        const url = `${formattedType}?with_genres=${formattedCategory}&page=${page}`;
-        return url;
-    }
+    const movies = await getMovies(await buildMovieUrl({ category, type, page: parseInt(page as string) || 1 }))
 
     return (
         <section className="py-12 bg-muted/30" key={params.type + params.category}>

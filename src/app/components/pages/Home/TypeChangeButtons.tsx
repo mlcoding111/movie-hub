@@ -21,7 +21,7 @@ export default function TypeChangeButtons() {
     function updateSearchParam(key: string, value: string) {
         const params = new URLSearchParams(searchParams);
 
-        params.set(key, value); // Replace or add the key-value pair
+        params.set(key, value);
         replace(`${pathname}?${params.toString()}`, { scroll: false });
     }
 
