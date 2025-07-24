@@ -20,3 +20,12 @@ export async function getMovieById(movieId: number) {
     });
     return result;
 }
+
+export async function getSimilarMovies(movieId: number) {
+    const result = await apiFetch(`movie/${movieId}/similar`, {
+        next: {
+            tags: ['similar-movies', movieId.toString()]
+        }
+    });
+    return result;
+}

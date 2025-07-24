@@ -12,6 +12,11 @@ import Link from "next/link"
 import { useParams } from "next/navigation"
 import { getImageUrl } from "@/utils/images"
 import { toast } from "sonner"
+import RelatedMovies from "./RelatedMovies"
+
+// TODO: Move favorite logic to a separate file
+// TODO: Make this component Server only
+// TODO: Finish related movies
 
 const relatedMovies = [
   {
@@ -79,11 +84,6 @@ type ProductionCompany = {
 
 export default function MovieDetailsPage({ movie }: { movie: any }) {
   const [isFavorite, setIsFavorite] = useState(false)
-
-  // OnFavorite, push into an  array of key favorites
-  // OnUnfavorite, remove from the array
-  // OnLoad, check if the movie is in the array of favorites
-  // OnLoad, set the isFavorite state to the result of the check
 
   useEffect(() => {
     const favorites = localStorage.getItem("favorites")
@@ -357,7 +357,8 @@ export default function MovieDetailsPage({ movie }: { movie: any }) {
 
             <TabsContent value="related" className="mt-8">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                {relatedMovies.map((relatedMovie) => (
+                <RelatedMovies />
+                {/* {relatedMovies.map((relatedMovie) => (
                   <Link key={relatedMovie.id} href={`/movie/${relatedMovie.id}`}>
                     <Card className="hover:shadow-lg transition-shadow">
                       <CardContent className="p-0">
@@ -381,7 +382,7 @@ export default function MovieDetailsPage({ movie }: { movie: any }) {
                       </CardContent>
                     </Card>
                   </Link>
-                ))}
+                ))} */}
               </div>
             </TabsContent>
           </Tabs>
