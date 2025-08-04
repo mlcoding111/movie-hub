@@ -356,7 +356,6 @@ export default function MovieDetailsPage({ movie }: { movie: any }) {
             </TabsContent>
 
             <TabsContent value="related" className="mt-8">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                 <RelatedMovies />
                 {/* {relatedMovies.map((relatedMovie) => (
                   <Link key={relatedMovie.id} href={`/movie/${relatedMovie.id}`}>
@@ -383,7 +382,6 @@ export default function MovieDetailsPage({ movie }: { movie: any }) {
                     </Card>
                   </Link>
                 ))} */}
-              </div>
             </TabsContent>
           </Tabs>
         </div>
