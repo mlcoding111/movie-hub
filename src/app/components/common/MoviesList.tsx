@@ -53,7 +53,7 @@ export default function MoviesList({ movies }: { movies: any }) {
     return (
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-6 mb-8">
             {moviesList?.map((movie: any) => (
-                <Link key={movie.id} href={`/movie/${movie.id}?search=${search}`}>
+                <Link key={movie.id} href={`/movie/${movie.id} ${search ? `?search=${search}` : ''}`}>
                     <MovieCard movie={movie} />
                 </Link>
             ))}
