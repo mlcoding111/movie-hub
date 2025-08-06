@@ -45,6 +45,9 @@ export default function MoviesList({ movies }: { movies: any }) {
         if (inView && hasMore) {
             debouncedLoadMore();
         }
+        return () => {
+            debouncedLoadMore.cancel();
+        }
     }, [inView])
 
     return (
