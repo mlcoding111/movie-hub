@@ -10,7 +10,6 @@ const MOVIES_PER_PAGE = 20;
 export default async function MoviesSection({ params }: { params: any }) {
     const { type = 'popular', category = 'all', page = 1 } = params
     const movies = await getMovies(await buildMovieUrl({ category, type, page: parseInt(page as string) || 1 }))
-
     return (
         <section className="py-12 bg-muted/30" key={params.type + params.category}>
             <div className="container mx-auto px-4">
@@ -29,6 +28,6 @@ export default async function MoviesSection({ params }: { params: any }) {
                 {/* Movies Grid */}
                 <MoviesList movies={movies} />
             </div>
-        </section >
+        </section>
     )
 }
