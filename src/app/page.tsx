@@ -23,6 +23,8 @@ export default async function Home({ searchParams }: HomeProps) {
   ]);
 
 
+
+
   return (
     <div className="min-h-screen bg-background">
       <Header />

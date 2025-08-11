@@ -6,11 +6,12 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import Spinner from "./Spinner";
-import { getMovies } from "@/api/movie";
+import { getMovies, getMoviesByGenre } from "@/api/movie";
 import { toSnakeCase } from "@/utils/string";
 import { debounce } from "lodash";
+import { getGenreIdFromName } from "@/utils/genres";
 
-export default function MoviesList({ movies }: { movies: any }) {
+export default function MoviesList({ movies, genreId = 0 }: { movies: any, genreId?: number }) {
     const searchParams = useSearchParams();
     const type = searchParams.get('type') || 'popular';
     const search = searchParams.get('search');
@@ -30,12 +31,26 @@ export default function MoviesList({ movies }: { movies: any }) {
     }
 
     async function loadMoreMovies() {
-        const newMovies = await getMovies(await buildUrl(type, page + 1))
-        console.log('The new movies are', newMovies);
+        let newMovies: any = [];
+        if (genreId === 0) {
+            newMovies = await getMovies(await buildUrl(type, page + 1))
+        } else {
+            // For genre-specific movies, we need to get the genre ID and use getMoviesByGenre
+            newMovies = await getMoviesByGenre(genreId, page + 1)
+        }
         setPage(page + 1);
         setMoviesList(moviesList.concat(newMovies?.results || []));
         setHasMore(newMovies?.total_pages > page);
     }
+
+
+    useEffect(() => {
+        if (genreId === 0) {
+            setMoviesList(movies?.results || []);
+        } else {
+            setMoviesList(movies?.results || []);
+        }
+    }, [movies, genreId]);
 
     const debouncedLoadMore = debounce(loadMoreMovies, 500);
 

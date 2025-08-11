@@ -4,24 +4,18 @@ import { getMoviesByGenre } from "@/api/movie"
 import { Badge } from "@/components/ui/badge"
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
-import Image from "next/image"
 import MoviesList from "@/app/components/common/MoviesList"
+import GenreFilters from "@/app/components/pages/Genre/GenreFilters"
 
 // https://api.themoviedb.org/3/discover/movie?with_genres=28&page=1&sort_by=popularity.desc&language=en-US
-// Extended movie data for genre pages
-const MOVIES_PER_PAGE = 20
 
 export default async function GenrePage({ params }: { params: any }) {
   const { name } = await params
-  // const genreName = name as string
   const genreId = getGenreIdFromName(name)
   const response = await getMoviesByGenre(genreId)
-  const movies = response.results
   const totalMovies = response.total_results
-  console.log('The movies are', movies)
   return (
     <div className="min-h-screen bg-background">
-      Saklut {name} {genreId}
       {/* Header */}
       <header className="border-b">
         <div className="container mx-auto px-4 py-4">
@@ -42,7 +36,7 @@ export default async function GenrePage({ params }: { params: any }) {
             <p className="text-xl mb-6">{name}</p>
             <div className="flex items-center space-x-6 text-sm">
               <div>
-                <span className="font-semibold text-2xl">{genreId.toLocaleString()}</span>
+                <span className="font-semibold text-2xl">{totalMovies}</span>
                 <p>Movies Available</p>
               </div>
               <div>
@@ -66,7 +60,8 @@ export default async function GenrePage({ params }: { params: any }) {
           </div>
         </div>
       </section> */}
-      <MoviesList movies={response} />
+      <GenreFilters />
+      <MoviesList movies={response} genreId={genreId} />
     </div>
   )
 }
