@@ -11,7 +11,7 @@ export default async function CategoriesSection() {
             <div className="container mx-auto px-4">
                 <h2 className="text-3xl font-bold mb-8">Browse by Genre</h2>
                 <div className="flex flex-wrap gap-2">
-                    <Suspense fallback={<div>Loading.. ddd.</div>}>
+                    <Suspense fallback={<div>Loading...</div>}>
                         {categories.map((category: any) => (
                             <Link key={category.name} href={`/genre/${category.name.toLowerCase()}`}>
                                 <Badge variant="secondary">{category.name}</Badge>

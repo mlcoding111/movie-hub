@@ -12,6 +12,16 @@ export async function getMovies(query: string, options: any = {}) {
     return result;
 }
 
+export async function getMoviesByGenre(genreId: number) {
+    console.log('The genreId is', genreId);
+    const result = await apiFetch(`discover/movie?with_genres=${genreId}&page=1&sort_by=popularity.desc&language=en-US`, {
+        next: {
+            tags: ['movies', genreId.toString()]
+        }
+    });
+    return result;
+}
+
 export async function getMovieById(movieId: number) {
     const result = await apiFetch(`movie/${movieId}`, {
         next: {

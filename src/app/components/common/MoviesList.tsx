@@ -13,7 +13,6 @@ import { debounce } from "lodash";
 export default function MoviesList({ movies }: { movies: any }) {
     const searchParams = useSearchParams();
     const type = searchParams.get('type') || 'popular';
-    const category = searchParams.get('category') || 'all';
     const search = searchParams.get('search');
 
     const [hasMore, setHasMore] = useState(true);
@@ -24,16 +23,15 @@ export default function MoviesList({ movies }: { movies: any }) {
         threshold: 0.5,
     })
 
-    async function buildUrl(category: string, type: string, page: number = 1) {
+    async function buildUrl(type: string, page: number = 1) {
         const formattedType = toSnakeCase(type)
-        const formattedCategory = toSnakeCase(category)
-        const url = `${formattedType}?with_genres=${formattedCategory}&page=${page}`;
+        const url = `${formattedType}?page=${page}`;
         return url;
     }
 
-
     async function loadMoreMovies() {
-        const newMovies = await getMovies(await buildUrl(category, type, page + 1))
+        const newMovies = await getMovies(await buildUrl(type, page + 1))
+        console.log('The new movies are', newMovies);
         setPage(page + 1);
         setMoviesList(moviesList.concat(newMovies?.results || []));
         setHasMore(newMovies?.total_pages > page);
