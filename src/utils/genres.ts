@@ -55,6 +55,5 @@ export const getGenreIdFromName = (genreName: string) => {
     // Make sure the genreName and GENRES are the same case
     const formattedGenreName = genreName.toLowerCase()
     const genreId = Object.keys(GENRES).find((key) => GENRES[key as keyof typeof GENRES].toLowerCase() === formattedGenreName) as unknown as number;
-    console.log('genreId', genreId)
     return genreId;
 }

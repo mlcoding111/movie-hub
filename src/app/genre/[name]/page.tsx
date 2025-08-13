@@ -10,17 +10,16 @@ import { firstLetterUpperCase } from "@/utils/string"
 import { getImageUrl } from "@/utils/images"
 import Image from "next/image"
 
-// https://api.themoviedb.org/3/discover/movie?with_genres=28&page=1&sort_by=popularity.desc&language=en-US
-
-export default async function GenrePage({ params }: { params: any }) {
+export default async function GenrePage({ params, searchParams }: { params: any, searchParams: any }) {
   const { name } = await params
+  const { sort_by } = await searchParams
   const genreId = getGenreIdFromName(name)
-  const response = await getMoviesByGenre(genreId)
+  const response = await getMoviesByGenre(genreId, 1, sort_by)
   const totalMovies = response.total_results
 
   // Take random item inside resposne.results array backdrop_path
-  const randomMovie = response.results[Math.floor(Math.random() * response.results.length)]
-  const backdropPath = randomMovie.backdrop_path
+  const randomMovie = response?.results[Math.floor(Math.random() * response?.results.length)]
+  const backdropPath = randomMovie?.backdrop_path || ""
   
   return (
     <div className="min-h-screen bg-background">
