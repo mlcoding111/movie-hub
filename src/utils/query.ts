@@ -10,7 +10,6 @@ export async function buildMovieUrl({ category = '', type = 'popular', page = 1,
 
     if (formattedCategory) {
         const genreId = getGenreIdFromName(formattedCategory)
-        console.log('genreId', genreId)
         finalUrl += `&with_genres=${genreId}`
     }
 
