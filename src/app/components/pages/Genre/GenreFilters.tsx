@@ -12,7 +12,7 @@ export default function GenreFilters() {
     const searchParams = useSearchParams();
     const pathname = usePathname();
     const [searchQuery, setSearchQuery] = useState('');
-    const [sortBy, setSortBy] = useState('rating');
+    const [sortBy, setSortBy] = useState(searchParams.get('sort_by') || 'popularity');
 
     // Debounced search function to prevent excessive API calls
     const debouncedSearch = useCallback(
@@ -45,7 +45,7 @@ export default function GenreFilters() {
             <div className="container mx-auto px-4">
                 <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
                     <div className="flex items-center space-x-4">
-                        <div className="relative">
+                        {/* <div className="relative">
                             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
                             <Input
                                 placeholder={`Search...`}
@@ -54,7 +54,7 @@ export default function GenreFilters() {
                                 onChange={handleSearch}
                             />
 
-                        </div>
+                        </div> */}
                         {/* <Select
                 value={yearFilter}
                 onValueChange={(value) => {
@@ -87,9 +87,9 @@ export default function GenreFilters() {
                                     <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="rating">Rating</SelectItem>
-                                    <SelectItem value="year">Year</SelectItem>
-                                    <SelectItem value="title">Title</SelectItem>
+                                    <SelectItem value="popularity">Popularity</SelectItem>
+                                    <SelectItem value="primary_release_date">Release Date</SelectItem>
+                                    <SelectItem value="vote_average">Vote Average</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>

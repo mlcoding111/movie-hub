@@ -12,8 +12,8 @@ export async function getMovies(query: string, options: any = {}) {
     return result;
 }
 
-export async function getMoviesByGenre(genreId: number, page: number = 1, search: string = '') {
-    const result = await apiFetch(`discover/movie?with_genres=${genreId}&page=${page}&sort_by=popularity.desc&language=en-US&query=${search}`, {
+export async function getMoviesByGenre(genreId: number, page: number = 1, sort_by: string = 'popularity') {
+    const result = await apiFetch(`discover/movie?with_genres=${genreId}&page=${page}&sort_by=${sort_by}.desc&language=en-US`, {
         next: {
             tags: ['movies', genreId.toString()]
         }
