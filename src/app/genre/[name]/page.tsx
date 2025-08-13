@@ -1,11 +1,14 @@
 
-import { getGenreIdFromName } from "@/utils/genres"
+import { GENRE_DESCRIPTIONS, getGenreIdFromName } from "@/utils/genres"
 import { getMoviesByGenre } from "@/api/movie"
 import { Badge } from "@/components/ui/badge"
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
 import MoviesList from "@/app/components/common/MoviesList"
 import GenreFilters from "@/app/components/pages/Genre/GenreFilters"
+import { firstLetterUpperCase } from "@/utils/string"
+import { getImageUrl } from "@/utils/images"
+import Image from "next/image"
 
 // https://api.themoviedb.org/3/discover/movie?with_genres=28&page=1&sort_by=popularity.desc&language=en-US
 
@@ -14,6 +17,11 @@ export default async function GenrePage({ params }: { params: any }) {
   const genreId = getGenreIdFromName(name)
   const response = await getMoviesByGenre(genreId)
   const totalMovies = response.total_results
+
+  // Take random item inside resposne.results array backdrop_path
+  const randomMovie = response.results[Math.floor(Math.random() * response.results.length)]
+  const backdropPath = randomMovie.backdrop_path
+  
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -22,18 +30,17 @@ export default async function GenrePage({ params }: { params: any }) {
           <Link href="/" className="flex items-center space-x-2">
             <ArrowLeft className="h-5 w-5" />
             <span>Back to Home</span>
-            <Badge variant="secondary">{name} {genreId}</Badge>
           </Link>
         </div>
       </header>
 
       <section className="relative h-80">
-        {/* <Image src={"/placeholder.svg"} alt={name} fill className="object-cover" /> */}
+        <Image src={ getImageUrl(backdropPath) || "/placeholder.svg" } fill={true} alt={name} className="object-cover" />
         <div className="absolute inset-0 bg-black/60" />
         <div className="container mx-auto px-4 relative z-10 h-full flex items-center">
           <div className="text-white max-w-2xl">
-            <h1 className="text-5xl font-bold mb-4">{name}</h1>
-            <p className="text-xl mb-6">{name}</p>
+            <h1 className="text-5xl font-bold mb-4">{firstLetterUpperCase(name)}</h1>
+            <p className="text-xl mb-6">{GENRE_DESCRIPTIONS[genreId as keyof typeof GENRE_DESCRIPTIONS]}</p>
             <div className="flex items-center space-x-6 text-sm">
               <div>
                 <span className="font-semibold text-2xl">{totalMovies}</span>
@@ -61,7 +68,28 @@ export default async function GenrePage({ params }: { params: any }) {
         </div>
       </section> */}
       <GenreFilters />
-      <MoviesList movies={response} genreId={genreId} />
+      <section className="py-12">
+        <div className="container mx-auto px-4">
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold mb-2">
+              {`All ${name}`}
+            </h2>
+            <p className="text-muted-foreground">
+              {totalMovies} results found
+            </p>
+          </div>
+          {/* <div className="mb-8">
+            <h2 className="text-2xl font-bold mb-2">
+              {searchQuery ? `Search Results for "${searchQuery}"` : `All ${genre.title}`}
+            </h2>
+            <p className="text-muted-foreground">
+              Showing {startIndex + 1}-{Math.min(endIndex, sortedMovies.length)} of {sortedMovies.length} movies
+            </p>
+          </div> */}
+          <MoviesList movies={response} genreId={genreId} />
+        </div>
+      </section>
+
     </div>
   )
 }
