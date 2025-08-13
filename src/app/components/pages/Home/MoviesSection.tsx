@@ -19,7 +19,7 @@ export default async function MoviesSection({ params }: { params: any }) {
                             {toTitleCase(type)} Movies
                         </h2>
                         <p className="text-muted-foreground mt-2">
-                            Showing {MOVIES_PER_PAGE * page} of {movies?.total_results} movies
+                            {movies?.total_results} results found
                         </p>
                     </div>
                     <TypeChangeButtons />

@@ -4,7 +4,8 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Filter, Search } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useState, useCallback } from "react";
+import { debounce } from "lodash";
 
 export default function GenreFilters() {
     const { replace } = useRouter();
@@ -13,9 +14,18 @@ export default function GenreFilters() {
     const [searchQuery, setSearchQuery] = useState('');
     const [sortBy, setSortBy] = useState('rating');
 
+    // Debounced search function to prevent excessive API calls
+    const debouncedSearch = useCallback(
+        debounce((query: string) => {
+            updateSearchParam('search', query);
+        }, 300),
+        []
+    );
+
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchQuery(e.target.value);
-        updateSearchParam('search', e.target.value);
+        const value = e.target.value;
+        setSearchQuery(value);
+        debouncedSearch(value);
     }
 
     const handleFilterChange = (filterName: string, value: string) => {

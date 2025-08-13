@@ -46,10 +46,10 @@ export default async function GenrePage({ params }: { params: any }) {
                 <span className="font-semibold text-2xl">{totalMovies}</span>
                 <p>Movies Available</p>
               </div>
-              <div>
+              {/* <div>
                 <span className="font-semibold">Top Directors:</span>
                 <p>{name}</p>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
