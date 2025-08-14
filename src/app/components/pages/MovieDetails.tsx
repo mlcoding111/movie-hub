@@ -13,6 +13,7 @@ import { useParams } from "next/navigation"
 import { getImageUrl } from "@/utils/images"
 import { toast } from "sonner"
 import RelatedMovies from "./RelatedMovies"
+import Reviews from "./Reviews"
 
 // TODO: Move favorite logic to a separate file
 // TODO: Make this component Server only
@@ -324,64 +325,11 @@ export default function MovieDetailsPage({ movie }: { movie: any }) {
             </TabsContent>
 
             <TabsContent value="reviews" className="mt-8">
-              <div className="space-y-6">
-                {reviews.map((review) => (
-                  <Card key={review.id}>
-                    <CardContent className="p-6">
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="flex items-center space-x-3">
-                          <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white font-semibold">
-                            {review.author[0]}
-                          </div>
-                          <div>
-                            <h4 className="font-semibold">{review.author}</h4>
-                            <p className="text-sm text-muted-foreground">{review.date}</p>
-                          </div>
-                        </div>
-                        <div className="flex items-center">
-                          {Array.from({ length: 5 }, (_, i) => (
-                            <Star
-                              key={i}
-                              className={`h-4 w-4 ${i < review.rating ? "text-yellow-400 fill-yellow-400" : "text-gray-300"
-                                }`}
-                            />
-                          ))}
-                        </div>
-                      </div>
-                      <p className="text-muted-foreground">{review.content}</p>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+              <Reviews />
             </TabsContent>
 
             <TabsContent value="related" className="mt-8">
                 <RelatedMovies />
-                {/* {relatedMovies.map((relatedMovie) => (
-                  <Link key={relatedMovie.id} href={`/movie/${relatedMovie.id}`}>
-                    <Card className="hover:shadow-lg transition-shadow">
-                      <CardContent className="p-0">
-                        <Image
-                          src={relatedMovie.poster || "/placeholder.svg"}
-                          alt={relatedMovie.title}
-                          width={200}
-                          height={300}
-                          className="w-full h-64 object-cover rounded-t-lg"
-                        />
-                        <div className="p-4">
-                          <h4 className="font-semibold mb-1">{relatedMovie.title}</h4>
-                          <div className="flex items-center justify-between text-sm text-muted-foreground">
-                            <span>{relatedMovie.year}</span>
-                            <div className="flex items-center">
-                              <Star className="h-3 w-3 text-yellow-400 fill-yellow-400 mr-1" />
-                              {relatedMovie.rating}
-                            </div>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </Link>
-                ))} */}
             </TabsContent>
           </Tabs>
         </div>
