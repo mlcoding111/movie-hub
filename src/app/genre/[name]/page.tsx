@@ -8,19 +8,25 @@ import MoviesList from "@/app/components/common/MoviesList"
 import GenreFilters from "@/app/components/pages/Genre/GenreFilters"
 import { firstLetterUpperCase } from "@/utils/string"
 import { getImageUrl } from "@/utils/images"
-import Image from "next/image"
 
-export default async function GenrePage({ params, searchParams }: { params: any, searchParams: any }) {
+// https://api.themoviedb.org/3/discover/movie?with_genres=28&page=1&sort_by=popularity.desc&language=en-US
+
+export default async function GenrePage({ params }: { params: any }) {
   const { name } = await params
-  const { sort_by } = await searchParams
   const genreId = getGenreIdFromName(name)
-  const response = await getMoviesByGenre(genreId, 1, sort_by)
+  const response = await getMoviesByGenre(genreId)
   const totalMovies = response.total_results
 
   // Take random item inside resposne.results array backdrop_path
-  const randomMovie = response?.results[Math.floor(Math.random() * response?.results.length)]
-  const backdropPath = randomMovie?.backdrop_path || ""
+  const randomMovie = response.results[Math.floor(Math.random() * response.results.length)]
+  const backdropPath = randomMovie.backdrop_path
+  const posterPath = randomMovie.poster_path
+  const title = randomMovie.title
+  const overview = randomMovie.overview
+  const releaseDate = randomMovie.release_date
+  const voteAverage = randomMovie.vote_average
   
+  console.log('The response is', response);
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -29,6 +35,7 @@ export default async function GenrePage({ params, searchParams }: { params: any,
           <Link href="/" className="flex items-center space-x-2">
             <ArrowLeft className="h-5 w-5" />
             <span>Back to Home</span>
+            <Badge variant="secondary">{name} {genreId}</Badge>
           </Link>
         </div>
       </header>
@@ -45,10 +52,10 @@ export default async function GenrePage({ params, searchParams }: { params: any,
                 <span className="font-semibold text-2xl">{totalMovies}</span>
                 <p>Movies Available</p>
               </div>
-              {/* <div>
+              <div>
                 <span className="font-semibold">Top Directors:</span>
                 <p>{name}</p>
-              </div> */}
+              </div>
             </div>
           </div>
         </div>
@@ -74,7 +81,7 @@ export default async function GenrePage({ params, searchParams }: { params: any,
               {`All ${name}`}
             </h2>
             <p className="text-muted-foreground">
-              {totalMovies} results found
+              Showing {1}-{Math.min(10, totalMovies)} of {totalMovies} movies
             </p>
           </div>
           {/* <div className="mb-8">
