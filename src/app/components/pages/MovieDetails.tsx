@@ -50,7 +50,9 @@ export default function MovieDetailsPage({ movie }: { movie: any }) {
                 <Heart className={`h-4 w-4 mr-2 ${isFavorite ? "fill-red-500 text-red-500" : ""}`} />
                 {isFavorite ? "Favorited" : "Add to Favorites"}
               </Button>
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" onClick={() => {
+                toast.error("Share not available")
+              }}>
                 <Share2 className="h-4 w-4 mr-2" />
                 Share
               </Button>
@@ -119,14 +121,18 @@ export default function MovieDetailsPage({ movie }: { movie: any }) {
                 </div>
 
                 <div className="flex space-x-4 mb-6">
-                  <Button size="lg" className="bg-red-600 hover:bg-red-700">
+                  <Button size="lg" className="bg-red-600 hover:bg-red-700" onClick={() => {
+                    toast.error("Trailer not available")
+                  }}>
                     <Play className="h-5 w-5 mr-2" />
                     Watch Trailer
                   </Button>
                   <Button
                     size="lg"
                     variant="secondary"
-
+                    onClick={() => {
+                      toast.error("Watchlist not available")
+                    }}
                   >
                     Add to Watchlist
                   </Button>

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export default function Header() {
     const [searchQuery, setSearchQuery] = useState("")
@@ -47,7 +48,9 @@ export default function Header() {
                                 onChange={(e) => handleSearchChange(e.target.value)}
                             />
                         </div>
-                        <Button>Sign In</Button>
+                        <Button onClick={() => {
+                            toast.error("Sign in not available")
+                        }}>Sign In</Button>
                     </div>
                 </div>
             </div>
