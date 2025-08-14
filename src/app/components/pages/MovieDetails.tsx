@@ -9,70 +9,10 @@ import { Progress } from "@/components/ui/progress"
 import { ArrowLeft, Star, Play, Heart, Share2, Clock } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
-import { useParams } from "next/navigation"
 import { getImageUrl } from "@/utils/images"
 import { toast } from "sonner"
 import RelatedMovies from "./RelatedMovies"
-
-// TODO: Move favorite logic to a separate file
-// TODO: Make this component Server only
-// TODO: Finish related movies
-
-const relatedMovies = [
-  {
-    id: 2,
-    title: "Batman Begins",
-    year: 2005,
-    rating: 8.2,
-    poster: "/placeholder.svg?height=300&width=200",
-  },
-  {
-    id: 3,
-    title: "The Dark Knight Rises",
-    year: 2012,
-    rating: 8.4,
-    poster: "/placeholder.svg?height=300&width=200",
-  },
-  {
-    id: 4,
-    title: "Joker",
-    year: 2019,
-    rating: 8.4,
-    poster: "/placeholder.svg?height=300&width=200",
-  },
-  {
-    id: 5,
-    title: "Batman v Superman",
-    year: 2016,
-    rating: 6.4,
-    poster: "/placeholder.svg?height=300&width=200",
-  },
-]
-
-const reviews = [
-  {
-    id: 1,
-    author: "John Smith",
-    rating: 5,
-    date: "2024-01-15",
-    content:
-      "An absolute masterpiece. Heath Ledger's performance as the Joker is unforgettable, and Christopher Nolan's direction is flawless.",
-  },
-  {
-    id: 2,
-    author: "Sarah Johnson",
-    rating: 5,
-    date: "2024-01-10",
-    content: "The Dark Knight redefined what a superhero movie could be. Dark, complex, and incredibly well-crafted.",
-  },
-  {
-    id: 3,
-    author: "Mike Wilson",
-    rating: 4,
-    date: "2024-01-05",
-    content: "Great movie with excellent cinematography and a compelling storyline. A must-watch for any Batman fan.",
-  },
-]
+import Reviews from "./Reviews"
 
 
 type ProductionCompany = {
@@ -324,64 +264,11 @@ export default function MovieDetailsPage({ movie }: { movie: any }) {
             </TabsContent>
 
             <TabsContent value="reviews" className="mt-8">
-              <div className="space-y-6">
-                {reviews.map((review) => (
-                  <Card key={review.id}>
-                    <CardContent className="p-6">
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="flex items-center space-x-3">
-                          <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white font-semibold">
-                            {review.author[0]}
-                          </div>
-                          <div>
-                            <h4 className="font-semibold">{review.author}</h4>
-                            <p className="text-sm text-muted-foreground">{review.date}</p>
-                          </div>
-                        </div>
-                        <div className="flex items-center">
-                          {Array.from({ length: 5 }, (_, i) => (
-                            <Star
-                              key={i}
-                              className={`h-4 w-4 ${i < review.rating ? "text-yellow-400 fill-yellow-400" : "text-gray-300"
-                                }`}
-                            />
-                          ))}
-                        </div>
-                      </div>
-                      <p className="text-muted-foreground">{review.content}</p>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+              <Reviews />
             </TabsContent>
 
             <TabsContent value="related" className="mt-8">
                 <RelatedMovies />
-                {/* {relatedMovies.map((relatedMovie) => (
-                  <Link key={relatedMovie.id} href={`/movie/${relatedMovie.id}`}>
-                    <Card className="hover:shadow-lg transition-shadow">
-                      <CardContent className="p-0">
-                        <Image
-                          src={relatedMovie.poster || "/placeholder.svg"}
-                          alt={relatedMovie.title}
-                          width={200}
-                          height={300}
-                          className="w-full h-64 object-cover rounded-t-lg"
-                        />
-                        <div className="p-4">
-                          <h4 className="font-semibold mb-1">{relatedMovie.title}</h4>
-                          <div className="flex items-center justify-between text-sm text-muted-foreground">
-                            <span>{relatedMovie.year}</span>
-                            <div className="flex items-center">
-                              <Star className="h-3 w-3 text-yellow-400 fill-yellow-400 mr-1" />
-                              {relatedMovie.rating}
-                            </div>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </Link>
-                ))} */}
             </TabsContent>
           </Tabs>
         </div>

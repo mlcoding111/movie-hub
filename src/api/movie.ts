@@ -36,3 +36,12 @@ export async function getSimilarMovies(movieId: number) {
     });
     return result;
 }
+
+export async function getMovieReviews(movieId: number) {
+    const result = await apiFetch(`movie/${movieId}/reviews`, {
+        next: {
+            tags: ['reviews', movieId.toString()]
+        }
+    });
+    return result;
+}
