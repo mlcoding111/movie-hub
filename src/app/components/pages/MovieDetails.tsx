@@ -9,71 +9,10 @@ import { Progress } from "@/components/ui/progress"
 import { ArrowLeft, Star, Play, Heart, Share2, Clock } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
-import { useParams } from "next/navigation"
 import { getImageUrl } from "@/utils/images"
 import { toast } from "sonner"
 import RelatedMovies from "./RelatedMovies"
 import Reviews from "./Reviews"
-
-// TODO: Move favorite logic to a separate file
-// TODO: Make this component Server only
-// TODO: Finish related movies
-
-const relatedMovies = [
-  {
-    id: 2,
-    title: "Batman Begins",
-    year: 2005,
-    rating: 8.2,
-    poster: "/placeholder.svg?height=300&width=200",
-  },
-  {
-    id: 3,
-    title: "The Dark Knight Rises",
-    year: 2012,
-    rating: 8.4,
-    poster: "/placeholder.svg?height=300&width=200",
-  },
-  {
-    id: 4,
-    title: "Joker",
-    year: 2019,
-    rating: 8.4,
-    poster: "/placeholder.svg?height=300&width=200",
-  },
-  {
-    id: 5,
-    title: "Batman v Superman",
-    year: 2016,
-    rating: 6.4,
-    poster: "/placeholder.svg?height=300&width=200",
-  },
-]
-
-const reviews = [
-  {
-    id: 1,
-    author: "John Smith",
-    rating: 5,
-    date: "2024-01-15",
-    content:
-      "An absolute masterpiece. Heath Ledger's performance as the Joker is unforgettable, and Christopher Nolan's direction is flawless.",
-  },
-  {
-    id: 2,
-    author: "Sarah Johnson",
-    rating: 5,
-    date: "2024-01-10",
-    content: "The Dark Knight redefined what a superhero movie could be. Dark, complex, and incredibly well-crafted.",
-  },
-  {
-    id: 3,
-    author: "Mike Wilson",
-    rating: 4,
-    date: "2024-01-05",
-    content: "Great movie with excellent cinematography and a compelling storyline. A must-watch for any Batman fan.",
-  },
-]
 
 
 type ProductionCompany = {

@@ -18,7 +18,7 @@ export default function MovieCard({ movie }: { movie: any }) {
             <CardContent className="p-0">
                 <div className="relative overflow-hidden rounded-t-lg">
                     <Image
-                        src={getImageUrl(movie.poster_path) || "/placeholder.svg"}
+                        src={getImageUrl(movie.poster_path) || "https://placehold.co/600x400?text=No+Image"}
                         alt={movie.title}
                         width={300}
                         height={400}

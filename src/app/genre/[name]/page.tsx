@@ -8,8 +8,7 @@ import MoviesList from "@/app/components/common/MoviesList"
 import GenreFilters from "@/app/components/pages/Genre/GenreFilters"
 import { firstLetterUpperCase } from "@/utils/string"
 import { getImageUrl } from "@/utils/images"
-
-// https://api.themoviedb.org/3/discover/movie?with_genres=28&page=1&sort_by=popularity.desc&language=en-US
+import Image from "next/image"
 
 export default async function GenrePage({ params }: { params: any }) {
   const { name } = await params
@@ -20,13 +19,7 @@ export default async function GenrePage({ params }: { params: any }) {
   // Take random item inside resposne.results array backdrop_path
   const randomMovie = response.results[Math.floor(Math.random() * response.results.length)]
   const backdropPath = randomMovie.backdrop_path
-  const posterPath = randomMovie.poster_path
-  const title = randomMovie.title
-  const overview = randomMovie.overview
-  const releaseDate = randomMovie.release_date
-  const voteAverage = randomMovie.vote_average
-  
-  console.log('The response is', response);
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -41,7 +34,8 @@ export default async function GenrePage({ params }: { params: any }) {
       </header>
 
       <section className="relative h-80">
-        <Image src={ getImageUrl(backdropPath) || "/placeholder.svg" } fill={true} alt={name} className="object-cover" />
+        {/* Focus on the top of the image */}
+        <Image src={getImageUrl(backdropPath) || "/placeholder.svg"} fill={true} alt={name} className="h-full w-full object-cover" />
         <div className="absolute inset-0 bg-black/60" />
         <div className="container mx-auto px-4 relative z-10 h-full flex items-center">
           <div className="text-white max-w-2xl">
@@ -61,18 +55,6 @@ export default async function GenrePage({ params }: { params: any }) {
         </div>
       </section>
 
-      {/* <section className="py-12">
-        <div className="container mx-auto px-4">
-          <div className="mb-8">
-            <h2 className="text-2xl font-bold mb-2">
-              {searchQuery ? `Search Results for "${searchQuery}"` : `All ${genre.title}`}
-            </h2>
-            <p className="text-muted-foreground">
-              Showing {startIndex + 1}-{Math.min(endIndex, sortedMovies.length)} of {sortedMovies.length} movies
-            </p>
-          </div>
-        </div>
-      </section> */}
       <GenreFilters />
       <section className="py-12">
         <div className="container mx-auto px-4">
@@ -81,17 +63,9 @@ export default async function GenrePage({ params }: { params: any }) {
               {`All ${name}`}
             </h2>
             <p className="text-muted-foreground">
-              Showing {1}-{Math.min(10, totalMovies)} of {totalMovies} movies
+              {totalMovies} movies
             </p>
           </div>
-          {/* <div className="mb-8">
-            <h2 className="text-2xl font-bold mb-2">
-              {searchQuery ? `Search Results for "${searchQuery}"` : `All ${genre.title}`}
-            </h2>
-            <p className="text-muted-foreground">
-              Showing {startIndex + 1}-{Math.min(endIndex, sortedMovies.length)} of {sortedMovies.length} movies
-            </p>
-          </div> */}
           <MoviesList movies={response} genreId={genreId} />
         </div>
       </section>
