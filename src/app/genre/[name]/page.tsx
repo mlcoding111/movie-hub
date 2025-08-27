@@ -28,7 +28,6 @@ export default async function GenrePage({ params }: { params: any }) {
           <Link href="/" className="flex items-center space-x-2">
             <ArrowLeft className="h-5 w-5" />
             <span>Back to Home</span>
-            <Badge variant="secondary">{name} {genreId}</Badge>
           </Link>
         </div>
       </header>
