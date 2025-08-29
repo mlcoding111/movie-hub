@@ -33,10 +33,11 @@ This project showcases my ability to:
  -->
 
  ## Roadmap
- * [ ] Implement TMDB api
- * [ ] Proper server/client components segmentation
- * [ ] Basic authentication system
- * [ ] Ensure responsiveness ui
+ * [X] Implement TMDB api
+ * [X] Proper server/client components segmentation
+ * [X] Ensure responsiveness ui
+ * [X] Pagination
+ * [X] Filters
 
 ### Built With
 
