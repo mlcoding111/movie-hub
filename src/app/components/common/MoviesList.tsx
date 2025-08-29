@@ -3,7 +3,7 @@
 import Link from "next/link";
 import MovieCard from "./MovieCard";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useMemo, useRef } from "react";
 import { useInView } from "react-intersection-observer";
 import Spinner from "./Spinner";
 import { getMovies, getMoviesByGenre } from "@/api/movie";
@@ -30,7 +30,7 @@ export default function MoviesList({ movies, genreId = 0 }: { movies: any, genre
         return url;
     }
 
-    async function loadMoreMovies() {
+    const loadMoreMovies = useCallback(async () => {
         let newMovies: any = [];
         if (genreId === 0) {
             newMovies = await getMovies(await buildUrl(type, page + 1))
@@ -38,10 +38,10 @@ export default function MoviesList({ movies, genreId = 0 }: { movies: any, genre
             // For genre-specific movies, we need to get the genre ID and use getMoviesByGenre
             newMovies = await getMoviesByGenre(genreId, page + 1)
         }
-        setPage(page + 1);
-        setMoviesList(moviesList.concat(newMovies?.results || []));
+        setPage((prevPage: number) => prevPage + 1);
+        setMoviesList((prevList: any[]) => prevList.concat(newMovies?.results || []));
         setHasMore(newMovies?.total_pages > page);
-    }
+    }, [genreId, type, page]);
 
 
     useEffect(() => {
@@ -52,7 +52,10 @@ export default function MoviesList({ movies, genreId = 0 }: { movies: any, genre
         }
     }, [movies, genreId]);
 
-    const debouncedLoadMore = debounce(loadMoreMovies, 500);
+    const debouncedLoadMore = useMemo(
+        () => debounce(loadMoreMovies, 500),
+        [loadMoreMovies]
+    );
 
     useEffect(() => {
         if (inView && hasMore) {
@@ -61,7 +64,7 @@ export default function MoviesList({ movies, genreId = 0 }: { movies: any, genre
         return () => {
             debouncedLoadMore.cancel();
         }
-    }, [inView])
+    }, [inView, debouncedLoadMore, hasMore])
 
     return (
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-6 mb-8">

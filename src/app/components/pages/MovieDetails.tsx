@@ -30,7 +30,7 @@ export default function MovieDetailsPage({ movie }: { movie: any }) {
     if (favorites) {
       setIsFavorite(favorites.includes(movie.id.toString()))
     }
-  }, [])
+  }, [movie.id])
 
   return (
     <div className="min-h-screen bg-background">

@@ -1,7 +1,6 @@
 
 import { GENRE_DESCRIPTIONS, getGenreIdFromName } from "@/utils/genres"
 import { getMoviesByGenre } from "@/api/movie"
-import { Badge } from "@/components/ui/badge"
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
 import MoviesList from "@/app/components/common/MoviesList"
@@ -13,7 +12,7 @@ import Image from "next/image"
 export default async function GenrePage({ params }: { params: any }) {
   const { name } = await params
   const genreId = getGenreIdFromName(name)
-  const response = await getMoviesByGenre(genreId)
+  const response = await getMoviesByGenre(genreId as number)
   const totalMovies = response.total_results
 
   // Take random item inside resposne.results array backdrop_path

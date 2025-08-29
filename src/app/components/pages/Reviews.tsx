@@ -1,7 +1,7 @@
 "use client"
 
 import { useParams } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 import { getMovieReviews } from "@/api/movie"
 import { Card, CardContent } from "@/components/ui/card"
 import Link from "next/link"
@@ -14,15 +14,15 @@ export default function Reviews() {
 
     const [reviews, setReviews] = useState<any[]>([])
 
-    async function getReviews() {
+    const getReviews = useCallback(async () => {
         const reviews = await getMovieReviews(movieId)
         console.log(reviews)
         setReviews(reviews.results)
-    }
+    }, [movieId])
 
     useEffect(() => {
         getReviews()
-    }, [])
+    }, [getReviews])
 
     return (
         <div className="space-y-3">

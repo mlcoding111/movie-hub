@@ -51,9 +51,16 @@ export const getMovieAllGenres = (genre_ids: number[]) => {
     return genre_ids.map((id) => getGenreName(id));
 }
 
-export const getGenreIdFromName = (genreName: string) => {
+export const getGenreIdFromName = (genreName: string): number | undefined => {
     // Make sure the genreName and GENRES are the same case
     const formattedGenreName = genreName.toLowerCase()
-    const genreId = Object.keys(GENRES).find((key) => GENRES[key as keyof typeof GENRES].toLowerCase() === formattedGenreName) as unknown as number;
-    return genreId;
+
+    // Find the genre ID by comparing lowercase names
+    for (const [id, name] of Object.entries(GENRES)) {
+        if (name.toLowerCase() === formattedGenreName) {
+            return parseInt(id);
+        }
+    }
+
+    return undefined;
 }

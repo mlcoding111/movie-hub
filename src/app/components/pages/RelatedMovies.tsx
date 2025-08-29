@@ -1,6 +1,6 @@
 import { getSimilarMovies } from "@/api/movie"
 import { useParams } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 import MovieCard from "../common/MovieCard"
 import Link from "next/link"
 
@@ -10,14 +10,14 @@ export default function RelatedMovies() {
 
     const [relatedMovies, setRelatedMovies] = useState<any[]>([])
 
-    async function getRelatedMovies() {
+    const getRelatedMovies = useCallback(async () => {
         const relatedMovies = await getSimilarMovies(movieId)
         setRelatedMovies(relatedMovies.results)
-    }
+    }, [movieId])
 
     useEffect(() => {
-        getRelatedMovies()  
-    }, [])
+        getRelatedMovies()
+    }, [getRelatedMovies])
 
     return (
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-6 mb-8">

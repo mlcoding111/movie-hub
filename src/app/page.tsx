@@ -8,15 +8,16 @@ import { getGenres } from "@/api/genre";
 import { Suspense } from "react";
 
 interface HomeProps {
-  searchParams: {
+  searchParams: Promise<{
     type: string;
     category: string;
     search: string;
     page: string;
-  }
+  }>
 }
 
 export default async function Home({ searchParams }: HomeProps) {
+
   const params = await searchParams;
   const [categories] = await Promise.all([
     getGenres(),
